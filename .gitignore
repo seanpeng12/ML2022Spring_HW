@@ -1,2 +1,7 @@
 # 忽略所有附檔名是 .xxx 的檔案
 *.run
+
+/hw2_classification/libriphone/
+/hw2_classification/libriphone.zip
+/hw4_self-attention/Dataset/
+/hw4_self-attention/Dataset.tar.gz
