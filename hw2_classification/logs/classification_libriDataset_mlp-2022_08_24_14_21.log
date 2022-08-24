@@ -1,0 +1,10 @@
+2022-08-24 14:22:41,556 - io.py[line:40] - INFO: Saving the model to `./VotingClassifier_Classifier_2_ckpt.pth`
+2022-08-24 14:22:41,637 - voting.py[line:245] - INFO: Epoch: 000 | Validation Acc: 44.295 % | Historical Best: 44.295 %
+2022-08-24 14:23:38,039 - io.py[line:40] - INFO: Saving the model to `./VotingClassifier_Classifier_2_ckpt.pth`
+2022-08-24 14:23:38,376 - voting.py[line:245] - INFO: Epoch: 001 | Validation Acc: 46.881 % | Historical Best: 46.881 %
+2022-08-24 14:24:34,859 - io.py[line:40] - INFO: Saving the model to `./VotingClassifier_Classifier_2_ckpt.pth`
+2022-08-24 14:24:35,374 - voting.py[line:245] - INFO: Epoch: 002 | Validation Acc: 47.162 % | Historical Best: 47.162 %
+2022-08-24 14:25:31,919 - io.py[line:40] - INFO: Saving the model to `./VotingClassifier_Classifier_2_ckpt.pth`
+2022-08-24 14:25:32,242 - voting.py[line:245] - INFO: Epoch: 003 | Validation Acc: 47.264 % | Historical Best: 47.264 %
+2022-08-24 14:26:28,736 - io.py[line:40] - INFO: Saving the model to `./VotingClassifier_Classifier_2_ckpt.pth`
+2022-08-24 14:26:29,229 - voting.py[line:245] - INFO: Epoch: 004 | Validation Acc: 47.500 % | Historical Best: 47.500 %
