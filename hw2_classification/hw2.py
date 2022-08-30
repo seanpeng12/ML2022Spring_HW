@@ -316,8 +316,8 @@ class Classifier(nn.Module):
         super(Classifier, self).__init__()
 
         self.fc = nn.Sequential(
-            BasicBlock(input_dim, hidden_dim),
-            *[BasicBlock(hidden_dim, hidden_dim) for _ in range(hidden_layers)],
+            BasicBlock_original(input_dim, hidden_dim),
+            *[BasicBlock_original(hidden_dim, hidden_dim) for _ in range(hidden_layers)],
             nn.Linear(hidden_dim, output_dim)
         )
 
@@ -335,14 +335,14 @@ train_ratio = 0.8               # the ratio of data used for training, the rest 
 
 # training parameter 训练参数
 seed = 0                        # random seed
-batch_size = 512                # batch size - 原始測資為512
-num_epoch = 5                   # the number of training epoch
+batch_size = 1024               # batch size - 原始測資為512
+num_epoch = 40                  # the number of training epoch - 原始測資為5
 learning_rate = 0.0001          # learning rate
 model_path = './model.ckpt'     # the path where the checkpoint will be saved
 
 # model parameters 模型参数
 input_dim = 39 * concat_nframes # the input dim of the model, you should not change the value
-hidden_layers = 2               # the number of hidden layers 原始值為1
+hidden_layers = 10              # the number of hidden layers 原始值為1
 hidden_dim = 1700               # the hidden dim 原始值為256
 
 # %% [markdown]

@@ -17,7 +17,8 @@ from tqdm import tqdm
 
 # use ensemble-pytorch
 from torchensemble.utils.logging import set_logger
-logger = set_logger('classification_libriDataset_mlp', use_tb_logger=True)
+# use logger 
+# logger = set_logger('classification_libriDataset_mlp', use_tb_logger=True)
 
 def load_feat(path):
     feat = torch.load(path) # 使用torch.load讀取.pt檔可得到tensor
@@ -241,7 +242,6 @@ def same_seeds(seed):
 same_seeds(seed)
 
 # create model, define a loss function, and optimizer
-# model = Classifier(input_dim=input_dim, hidden_layers=hidden_layers, hidden_dim=hidden_dim).to(device)
 # Define the ensemble
 from torchensemble import VotingClassifier
 
@@ -253,66 +253,75 @@ model = VotingClassifier(
 criterion = nn.CrossEntropyLoss() 
 model.set_criterion(criterion)
 model.set_optimizer('AdamW', lr=learning_rate)
-# optimizer = torch.optim.AdamW(model.parameters(), lr=learning_rate)
+
+print("##################\nmodel=",end="")
+# print(model)
 
 records = []
 
-# Train
-print("start trainin/testing......")
-tic = time.time()
+# Train以下為訓練階段
+print("start training/testing......")
+# tic = time.time()
 model.fit(
     train_loader,
     epochs=num_epoch,
     test_loader=val_loader,  
     save_model=True
 )
-toc = time.time()
-training_time = toc - tic
+# toc = time.time()
+# training_time = toc - tic
 
 
-# Evaluating/Testing
-print("start predict......skip")
+# Evaluating/Testing以下為套件的predict階段
+print("start predict......skip this session")
 # tic = time.time()
 # accuracy = model.predict(test_loader)
 # toc = time.time()
 # evaluating_time = toc - tic
 # records.append(("VotingClassifier", training_time, evaluating_time))
 
+
 del train_loader, val_loader
 gc.collect()
 
-# predict
-print("start prediction......")
-# load model
-model = VotingClassifier(
-    estimator=Classifier(input_dim=input_dim, hidden_layers=hidden_layers, hidden_dim=hidden_dim),
-    n_estimators=1,
-    cuda=True,
-)
-model.load_state_dict(torch.load(model_path))
+ # Evaluate
+acc = model.evaluate(test_loader)
+print("Testing Acc: {:.3f}".format(acc))
 
-"""Make prediction."""
-test_acc = 0.0
-test_lengths = 0
-pred = np.array([], dtype=np.int32)
 
-model.eval()
-with torch.no_grad():
-    for i, batch in enumerate(tqdm(test_loader)):
-        features = batch
-        features = features.to(device)
+# predict以下為kaggle個格式的predict階段
+# print("start prediction......")
 
-        outputs = model(features)
+# # load model
+# model = VotingClassifier(
+#     estimator=Classifier(input_dim=input_dim, hidden_layers=hidden_layers, hidden_dim=hidden_dim),
+#     n_estimators=1,
+#     cuda=True,
+# )
+# model.load_state_dict(torch.load(model_path), strict=False) 
 
-        _, test_pred = torch.max(outputs, 1) # get the index of the class with the highest probability
-        pred = np.concatenate((pred, test_pred.cpu().numpy()), axis=0)
+# """Make prediction."""
+# test_acc = 0.0
+# test_lengths = 0
+# pred = np.array([], dtype=np.int32)
 
-"""Write prediction to a CSV file.
+# model.eval()
 
-After finish running this block, download the file `prediction.csv` from the files section on the left-hand side and submit it to Kaggle.
-"""
 
-with open('prediction.csv', 'w') as f:
-    f.write('Id,Class\n')
-    for i, y in enumerate(pred):
-        f.write('{},{}\n'.format(i, y))
+# with torch.no_grad():
+#     for i, batch in enumerate(tqdm(test_loader)):
+#         features = batch
+#         features = features.to(device)
+#         print("數字為：%d" % i)
+#         print(batch)
+#         outputs = model.predict(features)
+#         # outputs = model(features)
+
+#         _, test_pred = torch.max(outputs, 1) # get the index of the class with the highest probability
+#         pred = np.concatenate((pred, test_pred.cpu().numpy()), axis=0)
+
+
+# with open('prediction.csv', 'w') as f:
+#     f.write('Id,Class\n')
+#     for i, y in enumerate(pred):
+#         f.write('{},{}\n'.format(i, y))
